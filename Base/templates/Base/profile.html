@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+
+{% block x%}
+{% load static %}
+
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Topics Start -->
+    {% include 'Base/topics_components.html'%}
+    <!-- Topics End -->
+
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large active">
+            {% if request.user == user %}
+            <form type="submit" method="POST">
+              {% csrf_token %}
+              <input title="Remove Picture" type="submit" class="circle-hyphen-button" value="-" />
+            </form>
+            {% endif %}
+            <img src="{{user.avatar.url}}" />
+          </div>
+        </div>
+        <div class="profile__info">
+          <h3>{{user.name}}</h3>
+          <p>@{{user.username}}</p>
+          {% if request.user == user %}
+          <div>
+            <a href="{% url 'update_user_page' %}" class="btn btn--main btn--pill">Edit Profile</a>
+          </div>
+
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          <h3>Bio</h3>
+          <p>
+            {{user.bio|linebreaks }}
+          </p>
+        </div>
+      </div>
+
+      <div class="roomList__header">
+        <div>
+          <h2>Study Rooms Hosted by {{user.username}}</a>
+          </h2>
+        </div>
+      </div>
+      {% include 'Base/feed_components.html'%}
+    </div>
+    <!-- Room List End -->
+
+    <!-- Activities Start -->
+    {% include 'Base/activity_components.html'%}
+  </div>
+  <!-- Activities End -->
+  </div>
+</main>
+
+{% endblock x %}
